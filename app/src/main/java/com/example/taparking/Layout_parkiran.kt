@@ -1,15 +1,21 @@
 package com.example.taparking
+
+import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.example.taparking.R
 import com.google.firebase.database.*
-
 
 class LayoutParkiranActivity : AppCompatActivity() {
     private lateinit var lp1: ImageView
@@ -24,9 +30,21 @@ class LayoutParkiranActivity : AppCompatActivity() {
     private lateinit var lp10: ImageView
     private lateinit var database: DatabaseReference
 
+    private val previousData = mutableMapOf<String, Int>()
+    private val pendingUpdates = mutableMapOf<String, Int>()
+
+    private val CHANNEL_ID = "parking_notifications"
+    private var initialLoadCompleted = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_layout_parkiran)
+
+        val backButton: ImageView = findViewById(R.id.parkir_back)
+        backButton.setOnClickListener {
+            val intent = Intent(this, DashboardActivity::class.java)
+            startActivity(intent)
+        }
 
         lp1 = findViewById(R.id.lp_1)
         lp2 = findViewById(R.id.lp_2)
@@ -41,47 +59,141 @@ class LayoutParkiranActivity : AppCompatActivity() {
 
         database = FirebaseDatabase.getInstance().reference
 
+        // Create Notification Channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Parking Notifications"
+            val descriptionText = "Notifications for parking status changes"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+
         database.child("sensor").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                // Mengambil data dari Firebase
-                val slotData1 = snapshot.child("sensor1").getValue(Int::class.java) ?: 0
-                val slotData2 = snapshot.child("sensor2").getValue(Int::class.java) ?: 0
-                val slotData3 = snapshot.child("sensor3").getValue(Int::class.java) ?: 0
-                val slotData4 = snapshot.child("sensor4").getValue(Int::class.java) ?: 0
-                val slotData5 = snapshot.child("sensor5").getValue(Int::class.java) ?: 0
-                val slotData6 = snapshot.child("sensor10").getValue(Int::class.java) ?: 0
-                val slotData7 = snapshot.child("sensor9").getValue(Int::class.java) ?: 0
-                val slotData8 = snapshot.child("sensor8").getValue(Int::class.java) ?: 0
-                val slotData9= snapshot.child("sensor7").getValue(Int::class.java) ?: 0
-                val slotData10 = snapshot.child("sensor6").getValue(Int::class.java) ?: 0
+                val sensorData = mapOf(
+                    "sensor1" to (snapshot.child("sensor1").getValue(Int::class.java) ?: 0),
+                    "sensor2" to (snapshot.child("sensor2").getValue(Int::class.java) ?: 0),
+                    "sensor3" to (snapshot.child("sensor3").getValue(Int::class.java) ?: 0),
+                    "sensor4" to (snapshot.child("sensor4").getValue(Int::class.java) ?: 0),
+                    "sensor5" to (snapshot.child("sensor5").getValue(Int::class.java) ?: 0),
+                    "sensor6" to (snapshot.child("sensor6").getValue(Int::class.java) ?: 0),
+                    "sensor7" to (snapshot.child("sensor7").getValue(Int::class.java) ?: 0),
+                    "sensor8" to (snapshot.child("sensor8").getValue(Int::class.java) ?: 0),
+                    "sensor9" to (snapshot.child("sensor9").getValue(Int::class.java) ?: 0),
+                    "sensor10" to (snapshot.child("sensor10").getValue(Int::class.java) ?: 0)
+                )
 
-                // Mengubah warna ImageView berdasarkan data
-                updateSlotImage(lp1, slotData1)
-                updateSlotImage(lp2, slotData2)
-                updateSlotImage(lp3, slotData3)
-                updateSlotImage(lp4, slotData4)
-                updateSlotImage(lp5, slotData5)
-                updateSlotImage(lp6, slotData6)
-                updateSlotImage(lp7, slotData7)
-                updateSlotImage(lp8, slotData8)
-                updateSlotImage(lp9, slotData9)
-                updateSlotImage(lp10, slotData10)
+                // Log sensor data for debugging
+                Log.d("LayoutParkiranActivity", "Sensor Data: $sensorData")
+
+                if (initialLoadCompleted) {
+                    // Check for changes and show notifications if needed
+                    sensorData.forEach { (key, value) ->
+                        val previousValue = previousData[key] ?: 0
+                        if (previousValue == 0 && value == 1) {
+                            // Sensor changed from 0 to 1, show notification
+                            pendingUpdates[key] = value
+                            showNotification(key)
+                        } else if (previousValue == 1 && value == 0) {
+                            // Sensor changed from 1 to 0, update UI immediately
+                            previousData[key] = value
+                        }
+                    }
+                } else {
+                    // Initial load completed, update previousData and UI
+                    previousData.putAll(sensorData)
+                    initialLoadCompleted = true
+                }
+
+                // Update UI with confirmed data
+                updateSlotImages(previousData)
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Menangani kesalahan database
+                // Handle possible errors
+                Log.e("LayoutParkiranActivity", "Database error: ${error.message}")
             }
         })
     }
 
-    private fun updateSlotImage(slot: ImageView, status: Int) {
-        if (status == 1) {
-            // Slot terisi, ganti warna background
-            slot.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
+    private fun updateSlotImages(sensorData: Map<String, Int>) {
+        Log.d("LayoutParkiranActivity", "Updating Slot Images with Data: $sensorData")
+        lp1.setBackgroundColor(getColorForStatus(sensorData["sensor1"] ?: 0))
+        lp2.setBackgroundColor(getColorForStatus(sensorData["sensor2"] ?: 0))
+        lp3.setBackgroundColor(getColorForStatus(sensorData["sensor3"] ?: 0))
+        lp4.setBackgroundColor(getColorForStatus(sensorData["sensor4"] ?: 0))
+        lp5.setBackgroundColor(getColorForStatus(sensorData["sensor5"] ?: 0))
+        lp6.setBackgroundColor(getColorForStatus(sensorData["sensor6"] ?: 0))
+        lp7.setBackgroundColor(getColorForStatus(sensorData["sensor7"] ?: 0))
+        lp8.setBackgroundColor(getColorForStatus(sensorData["sensor8"] ?: 0))
+        lp9.setBackgroundColor(getColorForStatus(sensorData["sensor9"] ?: 0))
+        lp10.setBackgroundColor(getColorForStatus(sensorData["sensor10"] ?: 0))
+    }
+
+    private fun getColorForStatus(status: Int): Int {
+        return if (status == 1) {
+            ContextCompat.getColor(this, R.color.hijau)
         } else {
-            // Slot kosong, ganti warna background
-            slot.setBackgroundColor(ContextCompat.getColor(this, R.color.hijau))
+            ContextCompat.getColor(this, R.color.red)
+        }
+    }
+
+    private fun showNotification(sensorKey: String) {
+        // Map sensorKey to slot number
+        val slotNumber = when (sensorKey) {
+            "sensor1" -> 1
+            "sensor2" -> 2
+            "sensor3" -> 3
+            "sensor4" -> 4
+            "sensor5" -> 5
+            "sensor6" -> 6
+            "sensor7" -> 7
+            "sensor8" -> 8
+            "sensor9" -> 9
+            "sensor10" -> 10
+            else -> 0 // Default to 0 if sensorKey is not recognized
         }
 
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setContentTitle("Parkiran Berubah")
+            .setContentText("Slot $slotNumber berubah status. Apakah Anda meninggalkan parkiran?")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+
+        val intent = Intent(this, LayoutParkiranActivity::class.java)
+
+        // Set FLAG_IMMUTABLE for Android 12 and above
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        builder.setContentIntent(pendingIntent)
+
+        with(NotificationManagerCompat.from(this)) {
+            notify(sensorKey.hashCode(), builder.build())
+        }
+
+        // Show confirmation dialog
+        AlertDialog.Builder(this)
+            .setTitle("Konfirmasi")
+            .setMessage("Slot $slotNumber berubah status menjadi kosong. Apakah Anda meninggalkan parkiran?")
+            .setPositiveButton("Ya") { _, _ ->
+                // Confirm and update UI
+                previousData[sensorKey] = pendingUpdates[sensorKey] ?: 0
+                pendingUpdates.remove(sensorKey)
+                updateSlotImages(previousData)
+            }
+            .setNegativeButton("Tidak") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 }
