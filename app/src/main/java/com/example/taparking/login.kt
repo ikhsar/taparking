@@ -23,6 +23,10 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+        binding.txtLForgot.setOnClickListener{
+            val intent = Intent(this,resetpassword::class.java)
+            startActivity(intent)
+        }
 
         binding.lBtn1.setOnClickListener {
             val email = binding.lEmail.text.toString()

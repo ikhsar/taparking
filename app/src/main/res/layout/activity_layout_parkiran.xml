@@ -6,7 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LayoutParkiranActivity"
-    android:background="@color/black">
+    android:background="@color/abu">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Masuk"
+        android:fontFamily="@font/poppinsbold"
+        android:layout_marginLeft="175dp"
+        android:layout_marginTop="100dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
 
     <ImageView
         android:layout_width="150dp"
@@ -15,6 +25,17 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="150dp"
         android:id="@+id/lp_1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="slot 1A"
+        android:fontFamily="@font/poppinsbold"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="175dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
     <ImageView
         android:layout_width="150dp"
         android:layout_height="75dp"
@@ -23,6 +44,15 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
         android:id="@+id/lp_2"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="slot 2A"
+        android:fontFamily="@font/poppinsbold"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="280dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
     <ImageView
         android:layout_width="150dp"
         android:layout_height="75dp"
@@ -31,6 +61,15 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
         android:id="@+id/lp_3"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="slot 3A"
+        android:fontFamily="@font/poppinsbold"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="385dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
     <ImageView
         android:layout_width="150dp"
         android:layout_height="75dp"
@@ -39,6 +78,15 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
         android:id="@+id/lp_4"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="slot 4A"
+        android:fontFamily="@font/poppinsbold"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="490dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
     <ImageView
         android:layout_width="150dp"
         android:layout_height="75dp"
@@ -47,6 +95,15 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
         android:id="@+id/lp_5"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="slot 5A"
+        android:fontFamily="@font/poppinsbold"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="595dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
     <ImageView
         android:layout_width="150dp"
         android:layout_height="75dp"
@@ -55,6 +112,15 @@
         android:layout_marginLeft="90dp"
         android:layout_marginTop="150dp"
         android:id="@+id/lp_6"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="slot 1B"
+        android:fontFamily="@font/poppinsbold"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="175dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
     <ImageView
         android:layout_width="150dp"
         android:layout_height="75dp"
@@ -63,6 +129,15 @@
         android:layout_marginLeft="250dp"
         android:layout_marginTop="30dp"
         android:id="@+id/lp_7"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="slot 2B"
+        android:fontFamily="@font/poppinsbold"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="280dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
     <ImageView
         android:layout_width="150dp"
         android:layout_height="75dp"
@@ -71,6 +146,15 @@
         android:layout_marginLeft="250dp"
         android:layout_marginTop="30dp"
         android:id="@+id/lp_8"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="slot 3B"
+        android:fontFamily="@font/poppinsbold"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="385dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
 
     <ImageView
         android:layout_width="150dp"
@@ -80,6 +164,15 @@
         android:layout_marginLeft="250dp"
         android:layout_marginTop="30dp"
         android:id="@+id/lp_9"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="slot 4B"
+        android:fontFamily="@font/poppinsbold"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="490dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
     <ImageView
         android:layout_width="150dp"
         android:layout_height="75dp"
@@ -88,10 +181,44 @@
         android:layout_marginLeft="250dp"
         android:layout_marginTop="30dp"
         android:id="@+id/lp_10"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="slot 5B"
+        android:fontFamily="@font/poppinsbold"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="595dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
 
-
-
-
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Keluar"
+        android:fontFamily="@font/poppinsbold"
+        android:layout_marginLeft="175dp"
+        android:layout_marginTop="660dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:id="@+id/parkir_back"
+        />
+    <TextView
+        android:id="@+id/rekomendasi_parkiran"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/parkir_back"
+        android:layout_centerHorizontal="true"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:background="@drawable/custom5"
+        android:fontFamily="@font/poppinssemibold"
+        android:text="Rekomendasi Parkiran"
+        />
 
 </RelativeLayout>

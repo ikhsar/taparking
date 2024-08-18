@@ -30,6 +30,7 @@
         android:layout_marginLeft="95dp"
         android:layout_marginTop="20dp"
         android:textSize="20sp"
+        android:textColor="@color/black"
         android:fontFamily="@font/poppinssemibold"
         android:id="@+id/txt_r_create"
         android:gravity="center"/>
@@ -200,7 +201,8 @@
             android:text="Login"
             android:textColor="@color/red"
             android:textSize="12sp"
-            android:fontFamily="@font/poppinssemibold"
+            android:layout_marginLeft="2dp"
+            android:fontFamily="@font/poppinsbold"
             android:id="@+id/RL"/>
     </LinearLayout>
 

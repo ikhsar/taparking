@@ -1,27 +1,52 @@
 {
   "project_info": {
-    "project_number": "652751475542",
-    "firebase_url": "https://project-ta-c67a0-default-rtdb.firebaseio.com",
-    "project_id": "project-ta-c67a0",
-    "storage_bucket": "project-ta-c67a0.appspot.com"
+    "project_number": "392223287646",
+    "firebase_url": "https://parking-recommendation-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "parking-recommendation",
+    "storage_bucket": "parking-recommendation.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:652751475542:android:25432b79e5983c5fb17cf7",
+        "mobilesdk_app_id": "1:392223287646:android:65f7504915c3545e0ec7cf",
         "android_client_info": {
           "package_name": "com.example.taparking"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "392223287646-lnld2fji4vlo2vhucv0nv40k5u64he0d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.taparking",
+            "certificate_hash": "7ba4ac3853a40c3f17825fa9e0f02ebcdda644a4"
+          }
+        },
+        {
+          "client_id": "392223287646-436trealpv2tkatg1e0dpue21v50qopb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyAmSfm7RVAkVn9ys7pwNi-XrfcspF9G730"
+          "current_key": "AIzaSyA9PZk56j4_B0Jzqul8-vT2hwsqqBOPozI"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "392223287646-436trealpv2tkatg1e0dpue21v50qopb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "392223287646-ta2k2bcbmfjv2qkehgubv0f9f20c6q5o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.parkingta"
+              }
+            }
+          ]
         }
       }
     }
